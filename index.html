@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>منتجاتي</title>
   <style>
     body { font-family: Arial, sans-serif; direction: rtl; background: #f9f9f9; }
@@ -27,37 +27,7 @@
   </div>
 
   <script>
-    const sheetUrl = "https://docs.google.com/spreadsheets/d/1lGqRZEaZmpyEDSatBLO6gXdTmRtlJ9SCRmFxAemcSws/pub?output=csv";
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR_-uN_IWr3g6o7DiHNvYzf43eldOS1pm32mpZnKljpB5X5VSmGhiSm_KPFMRknqwXamdfrypcmFWhk/pub?gid=0&single=true&output=csv";
 
     fetch(sheetUrl)
-      .then(response => response.text())
-      .then(data => {
-        let rows = data.split("\n").slice(1); // تجاهل الصف الأول (العناوين)
-        let container = document.getElementById("products");
-
-        rows.forEach(row => {
-          let cols = row.split(",");
-          if (cols.length >= 4) {
-            let name = cols[0].trim();
-            let price = cols[1].trim();
-            let category = cols[2].trim();
-            let image = cols[3].trim();
-
-            if (name && price && image) {
-              container.innerHTML += `
-                <div class="product">
-                  <img src="${image}" alt="${name}">
-                  <div>
-                    <h3>${name}</h3>
-                    <p>السعر: ${price}</p>
-                    <p>الفئة: ${category}</p>
-                  </div>
-                </div>
-              `;
-            }
-          }
-        });
-      });
-  </script>
-</body>
-</html>
+      .then(response => response

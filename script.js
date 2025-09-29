@@ -1,51 +1,38 @@
-async function loadProducts() {
-  const url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR_-uN_IWr3g6o7DiHNvYzf43eldOS1pm32mpZnKljpB5X5VSmGhiSm_KPFMRknqwXamdfrypcmFWhk/pub?gid=0&single=true&output=csv";
+const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR_-uN_IWr3g6o7DiHNvYzf43eldOS1pm32mpZnKljpB5X5VSmGhiSm_KPFMRknqwXamdfrypcmFWhk/pub?gid=0&single=true&output=csv";
 
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error("فشل في جلب البيانات");
+fetch(csvUrl)
+  .then(response => response.text())
+  .then(data => {
+    // تقسيم حسب الفاصلة أو الفاصلة المنقوطة
+    const rows = data.split("\n").map(r => r.split(/[,;]+/));
+    const headers = rows[0].map(h => h.trim().toLowerCase());
+    
+    const products = rows.slice(1).map(row => {
+      let product = {};
+      headers.forEach((h, i) => product[h] = row[i] ? row[i].trim() : "");
+      return product;
+    }).filter(p => p.name && p.price && p.image);
 
-    const text = await response.text();
+    const container = document.getElementById("product-list");
+    container.innerHTML = "";
 
-    const rows = text.split("\n").map(row => row.split(","));
-    const headers = rows[0];
-    const data = rows.slice(1);
-
-    const productsContainer = document.getElementById("products");
-    productsContainer.innerHTML = "";
-
-    let found = false;
-
-    data.forEach(row => {
-      const product = {};
-      headers.forEach((h, i) => {
-        product[h.trim()] = row[i] ? row[i].trim() : "";
-      });
-
-      // التأكد من أن الاسم والسعر موجودان
-      if (product.Name && product.Price) {
-        found = true;
-        const div = document.createElement("div");
-        div.className = "product";
-        div.innerHTML = `
-          <img src="${product.Image}" alt="${product.Name}">
-          <h2>${product.Name}</h2>
-          <p>💲 ${product.Price}</p>
-        `;
-        productsContainer.appendChild(div);
-      }
-    });
-
-    if (!found) {
-      productsContainer.innerHTML = "<div class='message warning'>⚠️ لم يتم العثور على منتجات في الجدول.</div>";
+    if (products.length === 0) {
+      container.innerHTML = "<p>⚠️ لم يتم العثور على منتجات في الجدول.</p>";
+      return;
     }
 
-  } catch (error) {
-    document.getElementById("products").innerHTML =
-      "<div class='message.error'>❌ خطأ أثناء تحميل المنتجات. تحقق من رابط Google Sheets.</div>";
-    console.error(error);
-  }
-}
-
-// شغّل عند بداية التحميل
-loadProducts();
+    products.forEach(p => {
+      const div = document.createElement("div");
+      div.className = "product";
+      div.innerHTML = `
+        <img src="${p.image}" alt="${p.name}">
+        <h3>${p.name}</h3>
+        <p>السعر: ${p.price} دج</p>
+      `;
+      container.appendChild(div);
+    });
+  })
+  .catch(err => {
+    console.error(err);
+    document.getElementById("product-list").innerHTML = "<p>❌ حصل خطأ أثناء جلب البيانات.</p>";
+  });

@@ -1,29 +1,33 @@
-<!doctype html>
-<html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="ar">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>متجر تجريبي</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>منتجاتي</title>
+  <style>
+    body { font-family: Arial, sans-serif; direction: rtl; background: #f9f9f9; }
+    .container { max-width: 900px; margin: auto; padding: 20px; }
+    .product { 
+      background: #fff; 
+      border: 1px solid #ddd; 
+      border-radius: 8px; 
+      padding: 15px; 
+      margin-bottom: 20px; 
+      display: flex; 
+      align-items: center;
+    }
+    .product img { width: 120px; height: auto; border-radius: 6px; margin-left: 15px; }
+    .product h3 { margin: 0; }
+    .product p { margin: 5px 0; }
+  </style>
 </head>
 <body>
-  <header class="top">
-    <h1>متجري — عرض حسب الفئات</h1>
-  </header>
+  <div class="container">
+    <h1>قائمة المنتجات</h1>
+    <div id="products"></div>
+  </div>
 
-  <section class="controls">
-    <input id="search" type="search" placeholder="ابحث عن منتج..." />
-    <select id="category">
-      <option value="all">كل الفئات</option>
-    </select>
-  </section>
-
-  <main>
-    <div id="products" class="grid"></div>
-  </main>
-
-  <footer class="foot">مبني بـ GitHub Pages — عدّل products.json لتحديث المنتجات</footer>
-
+  <!-- مكتبة Tabletop لقراءة Google Sheets -->
+  <script src="https://unpkg.com/tabletop@1.6.2/src/tabletop.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

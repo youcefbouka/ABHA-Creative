@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "name": "قميص رجالي",
+    "price": "2500 دج",
+    "category": "ملابس",
+    "image": "https://via.placeholder.com/400x280?text=قميص"
+  },
+  {
+    "id": 2,
+    "name": "هاتف ذكي",
+    "price": "30000 دج",
+    "category": "إلكترونيات",
+    "image": "https://via.placeholder.com/400x280?text=هاتف"
+  }
+]

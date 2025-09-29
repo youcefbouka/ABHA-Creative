@@ -26,8 +26,38 @@
     <div id="products"></div>
   </div>
 
-  <!-- مكتبة Tabletop لقراءة Google Sheets -->
-  <script src="https://unpkg.com/tabletop@1.6.2/src/tabletop.min.js"></script>
-  <script src="app.js"></script>
+  <script>
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/1lGqRZEaZmpyEDSatBLO6gXdTmRtlJ9SCRmFxAemcSws/pub?output=csv";
+
+    fetch(sheetUrl)
+      .then(response => response.text())
+      .then(data => {
+        let rows = data.split("\n").slice(1); // تجاهل الصف الأول (العناوين)
+        let container = document.getElementById("products");
+
+        rows.forEach(row => {
+          let cols = row.split(",");
+          if (cols.length >= 4) {
+            let name = cols[0].trim();
+            let price = cols[1].trim();
+            let category = cols[2].trim();
+            let image = cols[3].trim();
+
+            if (name && price && image) {
+              container.innerHTML += `
+                <div class="product">
+                  <img src="${image}" alt="${name}">
+                  <div>
+                    <h3>${name}</h3>
+                    <p>السعر: ${price}</p>
+                    <p>الفئة: ${category}</p>
+                  </div>
+                </div>
+              `;
+            }
+          }
+        });
+      });
+  </script>
 </body>
 </html>
